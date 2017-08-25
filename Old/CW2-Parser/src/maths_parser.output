@@ -1,0 +1,1969 @@
+Terminals unused in grammar
+
+   T_NEWLINE
+   T_LOG
+   T_EXP
+   T_SQRT
+   T_RIGHT_OP
+   T_LEFT_OP
+   T_PTR_OP
+
+
+Grammar
+
+    0 $accept: ROOT $end
+
+    1 ROOT: BASE
+
+    2 BASE: FUNCTIONLIST
+    3     | FUNCTIONLIST ALLSTATE
+    4     | DECLARATIONLIST
+
+    5 FUNCTIONLIST: DECLARATIONLIST FUNCTION
+    6             | FUNCTION
+    7             | FUNCTIONLIST FUNCTION
+    8             | FUNCTIONLIST DECLARATIONLIST FUNCTION
+
+    9 FUNCTION: TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   10         | TYPE T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   11         | TYPE T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY T_RCURLY
+   12         | TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY T_RCURLY
+
+   13 PARAMLIST: PARAM
+   14          | PARAMLIST T_COMMAR PARAM
+
+   15 PARAM: TYPE T_VARIABLE
+
+   16 ALLSTATE: DECLARATIONLIST STATEMENTLIST
+   17         | STATEMENTLIST
+   18         | DECLARATIONLIST
+
+   19 STATEMENTLIST: STATEMENT
+   20              | STATEMENTLIST STATEMENT
+   21              | STATEMENTLIST STATEMENTNOSEMI
+
+   22 STATEMENT: T_VARIABLE ASSIGNMENT_OP EXPR T_SEMICOLON
+   23          | RETURN
+   24          | INCDEC T_VARIABLE T_SEMICOLON
+   25          | T_VARIABLE INCDEC T_SEMICOLON
+   26          | IFWHILE T_LBRACKET COMPARE T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   27          | IFWHILE T_LBRACKET COMPARE T_RBRACKET T_LCURLY T_RCURLY
+   28          | T_ELSE T_LCURLY ALLSTATE T_RCURLY
+   29          | T_ELSE T_LCURLY T_RCURLY
+   30          | T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY T_RCURLY
+   32          | T_LBRACKET COMPARE T_RBRACKET T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT
+   33          | COMPARE T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT
+
+   34 STATEMENTNOSEMI: T_VARIABLE ASSIGNMENT_OP EXPR
+   35                | INCDEC T_VARIABLE
+   36                | T_VARIABLE INCDEC
+
+   37 DECLARATIONLIST: DECLARATION
+   38                | DECLARATIONLIST DECLARATION
+
+   39 DECLARATION: TYPE T_VARIABLE T_SEMICOLON
+   40            | TYPE T_VARIABLE T_EQUAL EXPR T_SEMICOLON
+
+   41 EXPR: TERM
+   42     | EXPR T_PLUS TERM
+   43     | EXPR T_MINUS TERM
+   44     | EXPR T_MODULO TERM
+
+   45 TERM: TERM T_TIMES FACTOR
+   46     | TERM T_DIVIDE FACTOR
+   47     | FACTOR
+
+   48 FACTOR: T_NUMBER
+   49       | T_VARIABLE
+   50       | T_LBRACKET EXPR T_RBRACKET
+
+   51 RETURN: T_RETURN T_VARIABLE T_SEMICOLON
+
+   52 TYPE: T_NUMINT
+
+   53 IFWHILE: T_IF
+   54        | T_WHILE
+
+   55 COMPARE: COMPARE2VAR
+   56        | T_NOT T_LBRACKET COMPARE2VAR T_RBRACKET
+   57        | T_NUMBER
+
+   58 COMPARE2VAR: T_VARIABLE COND_OP T_VARIABLE
+   59            | T_VARIABLE COND_OP T_NUMBER
+   60            | T_NUMBER COND_OP T_NUMBER
+
+   61 COND_OP: T_EQ_OP
+   62        | T_NE_OP
+   63        | T_GREATERTHAN
+   64        | T_LESSTHAN
+   65        | T_LE_OP
+   66        | T_GE_OP
+   67        | UNARY_OP
+
+   68 INCDEC: T_INC_OP
+   69       | T_DEC_OP
+
+   70 UNARY_OP: T_AND_OP
+   71         | T_OR_OP
+
+   72 ASSIGNMENT_OP: T_EQUAL
+   73              | T_MUL_ASSIGN
+   74              | T_DIV_ASSIGN
+   75              | T_MOD_ASSIGN
+   76              | T_ADD_ASSIGN
+   77              | T_SUB_ASSIGN
+   78              | T_LEFT_ASSIGN
+   79              | T_RIGHT_ASSIGN
+   80              | T_AND_ASSIGN
+   81              | T_XOR_ASSIGN
+   82              | T_OR_ASSIGN
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+T_COMMAR (258) 14
+T_NEWLINE (259)
+T_RETURN (260) 51
+T_MODULO (261) 44
+T_GREATERTHAN (262) 63
+T_LESSTHAN (263) 64
+T_NOT (264) 56
+T_WHILE (265) 54
+T_ELSE (266) 28 29
+T_FOR (267) 30 31
+T_QUESTIONM (268) 32 33
+T_COLON (269) 32 33
+T_TIMES (270) 45
+T_PLUS (271) 42
+T_DIVIDE (272) 46
+T_MINUS (273) 43
+T_LBRACKET (274) 9 10 11 12 26 27 30 31 32 50 56
+T_RBRACKET (275) 9 10 11 12 26 27 30 31 32 50 56
+T_LOG (276)
+T_EXP (277)
+T_SQRT (278)
+T_NUMBER (279) 48 57 59 60
+T_VARIABLE (280) 9 10 11 12 15 22 24 25 30 31 34 35 36 39 40 49 51
+    58 59
+T_LCURLY (281) 9 10 11 12 26 27 28 29 30 31
+T_RCURLY (282) 9 10 11 12 26 27 28 29 30 31
+T_NUMINT (283) 52
+T_SEMICOLON (284) 22 24 25 30 31 39 40 51
+T_IF (285) 53
+T_EQUAL (286) 40 72
+T_MUL_ASSIGN (287) 73
+T_DIV_ASSIGN (288) 74
+T_MOD_ASSIGN (289) 75
+T_ADD_ASSIGN (290) 76
+T_SUB_ASSIGN (291) 77
+T_LEFT_ASSIGN (292) 78
+T_RIGHT_ASSIGN (293) 79
+T_AND_ASSIGN (294) 80
+T_XOR_ASSIGN (295) 81
+T_OR_ASSIGN (296) 82
+T_LE_OP (297) 65
+T_GE_OP (298) 66
+T_EQ_OP (299) 61
+T_NE_OP (300) 62
+T_RIGHT_OP (301)
+T_LEFT_OP (302)
+T_INC_OP (303) 68
+T_DEC_OP (304) 69
+T_PTR_OP (305)
+T_AND_OP (306) 70
+T_OR_OP (307) 71
+
+
+Nonterminals, with rules where they appear
+
+$accept (53)
+    on left: 0
+ROOT (54)
+    on left: 1, on right: 0
+BASE (55)
+    on left: 2 3 4, on right: 1
+FUNCTIONLIST (56)
+    on left: 5 6 7 8, on right: 2 3 7 8
+FUNCTION (57)
+    on left: 9 10 11 12, on right: 5 6 7 8
+PARAMLIST (58)
+    on left: 13 14, on right: 9 12 14
+PARAM (59)
+    on left: 15, on right: 13 14
+ALLSTATE (60)
+    on left: 16 17 18, on right: 3 9 10 26 28 30
+STATEMENTLIST (61)
+    on left: 19 20 21, on right: 16 17 20 21
+STATEMENT (62)
+    on left: 22 23 24 25 26 27 28 29 30 31 32 33, on right: 19 20 32
+    33
+STATEMENTNOSEMI (63)
+    on left: 34 35 36, on right: 21 32 33
+DECLARATIONLIST (64)
+    on left: 37 38, on right: 4 5 8 16 18 38
+DECLARATION (65)
+    on left: 39 40, on right: 30 31 37 38
+EXPR (66)
+    on left: 41 42 43 44, on right: 22 34 40 42 43 44 50
+TERM (67)
+    on left: 45 46 47, on right: 41 42 43 44 45 46
+FACTOR (68)
+    on left: 48 49 50, on right: 45 46 47
+RETURN (69)
+    on left: 51, on right: 23
+TYPE (70)
+    on left: 52, on right: 9 10 11 12 15 39 40
+IFWHILE (71)
+    on left: 53 54, on right: 26 27
+COMPARE (72)
+    on left: 55 56 57, on right: 26 27 30 31 32 33
+COMPARE2VAR (73)
+    on left: 58 59 60, on right: 55 56
+COND_OP (74)
+    on left: 61 62 63 64 65 66 67, on right: 58 59 60
+INCDEC (75)
+    on left: 68 69, on right: 24 25 30 31 35 36
+UNARY_OP (76)
+    on left: 70 71, on right: 67
+ASSIGNMENT_OP (77)
+    on left: 72 73 74 75 76 77 78 79 80 81 82, on right: 22 34
+
+
+State 0
+
+    0 $accept: . ROOT $end
+
+    T_NUMINT  shift, and go to state 1
+
+    ROOT             go to state 2
+    BASE             go to state 3
+    FUNCTIONLIST     go to state 4
+    FUNCTION         go to state 5
+    DECLARATIONLIST  go to state 6
+    DECLARATION      go to state 7
+    TYPE             go to state 8
+
+
+State 1
+
+   52 TYPE: T_NUMINT .
+
+    $default  reduce using rule 52 (TYPE)
+
+
+State 2
+
+    0 $accept: ROOT . $end
+
+    $end  shift, and go to state 9
+
+
+State 3
+
+    1 ROOT: BASE .
+
+    $default  reduce using rule 1 (ROOT)
+
+
+State 4
+
+    2 BASE: FUNCTIONLIST .
+    3     | FUNCTIONLIST . ALLSTATE
+    7 FUNCTIONLIST: FUNCTIONLIST . FUNCTION
+    8             | FUNCTIONLIST . DECLARATIONLIST FUNCTION
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    $default  reduce using rule 2 (BASE)
+
+    FUNCTION         go to state 21
+    ALLSTATE         go to state 22
+    STATEMENTLIST    go to state 23
+    STATEMENT        go to state 24
+    DECLARATIONLIST  go to state 25
+    DECLARATION      go to state 7
+    RETURN           go to state 26
+    TYPE             go to state 8
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 30
+
+
+State 5
+
+    6 FUNCTIONLIST: FUNCTION .
+
+    $default  reduce using rule 6 (FUNCTIONLIST)
+
+
+State 6
+
+    4 BASE: DECLARATIONLIST .
+    5 FUNCTIONLIST: DECLARATIONLIST . FUNCTION
+   38 DECLARATIONLIST: DECLARATIONLIST . DECLARATION
+
+    T_NUMINT  shift, and go to state 1
+
+    $default  reduce using rule 4 (BASE)
+
+    FUNCTION     go to state 31
+    DECLARATION  go to state 32
+    TYPE         go to state 8
+
+
+State 7
+
+   37 DECLARATIONLIST: DECLARATION .
+
+    $default  reduce using rule 37 (DECLARATIONLIST)
+
+
+State 8
+
+    9 FUNCTION: TYPE . T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   10         | TYPE . T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   11         | TYPE . T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY T_RCURLY
+   12         | TYPE . T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY T_RCURLY
+   39 DECLARATION: TYPE . T_VARIABLE T_SEMICOLON
+   40            | TYPE . T_VARIABLE T_EQUAL EXPR T_SEMICOLON
+
+    T_VARIABLE  shift, and go to state 33
+
+
+State 9
+
+    0 $accept: ROOT $end .
+
+    $default  accept
+
+
+State 10
+
+   51 RETURN: T_RETURN . T_VARIABLE T_SEMICOLON
+
+    T_VARIABLE  shift, and go to state 34
+
+
+State 11
+
+   56 COMPARE: T_NOT . T_LBRACKET COMPARE2VAR T_RBRACKET
+
+    T_LBRACKET  shift, and go to state 35
+
+
+State 12
+
+   54 IFWHILE: T_WHILE .
+
+    $default  reduce using rule 54 (IFWHILE)
+
+
+State 13
+
+   28 STATEMENT: T_ELSE . T_LCURLY ALLSTATE T_RCURLY
+   29          | T_ELSE . T_LCURLY T_RCURLY
+
+    T_LCURLY  shift, and go to state 36
+
+
+State 14
+
+   30 STATEMENT: T_FOR . T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR . T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY T_RCURLY
+
+    T_LBRACKET  shift, and go to state 37
+
+
+State 15
+
+   32 STATEMENT: T_LBRACKET . COMPARE T_RBRACKET T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT
+
+    T_NOT       shift, and go to state 11
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 38
+
+    COMPARE      go to state 39
+    COMPARE2VAR  go to state 29
+
+
+State 16
+
+   57 COMPARE: T_NUMBER .
+   60 COMPARE2VAR: T_NUMBER . COND_OP T_NUMBER
+
+    T_GREATERTHAN  shift, and go to state 40
+    T_LESSTHAN     shift, and go to state 41
+    T_LE_OP        shift, and go to state 42
+    T_GE_OP        shift, and go to state 43
+    T_EQ_OP        shift, and go to state 44
+    T_NE_OP        shift, and go to state 45
+    T_AND_OP       shift, and go to state 46
+    T_OR_OP        shift, and go to state 47
+
+    $default  reduce using rule 57 (COMPARE)
+
+    COND_OP   go to state 48
+    UNARY_OP  go to state 49
+
+
+State 17
+
+   22 STATEMENT: T_VARIABLE . ASSIGNMENT_OP EXPR T_SEMICOLON
+   25          | T_VARIABLE . INCDEC T_SEMICOLON
+   58 COMPARE2VAR: T_VARIABLE . COND_OP T_VARIABLE
+   59            | T_VARIABLE . COND_OP T_NUMBER
+
+    T_GREATERTHAN   shift, and go to state 40
+    T_LESSTHAN      shift, and go to state 41
+    T_EQUAL         shift, and go to state 50
+    T_MUL_ASSIGN    shift, and go to state 51
+    T_DIV_ASSIGN    shift, and go to state 52
+    T_MOD_ASSIGN    shift, and go to state 53
+    T_ADD_ASSIGN    shift, and go to state 54
+    T_SUB_ASSIGN    shift, and go to state 55
+    T_LEFT_ASSIGN   shift, and go to state 56
+    T_RIGHT_ASSIGN  shift, and go to state 57
+    T_AND_ASSIGN    shift, and go to state 58
+    T_XOR_ASSIGN    shift, and go to state 59
+    T_OR_ASSIGN     shift, and go to state 60
+    T_LE_OP         shift, and go to state 42
+    T_GE_OP         shift, and go to state 43
+    T_EQ_OP         shift, and go to state 44
+    T_NE_OP         shift, and go to state 45
+    T_INC_OP        shift, and go to state 19
+    T_DEC_OP        shift, and go to state 20
+    T_AND_OP        shift, and go to state 46
+    T_OR_OP         shift, and go to state 47
+
+    COND_OP        go to state 61
+    INCDEC         go to state 62
+    UNARY_OP       go to state 49
+    ASSIGNMENT_OP  go to state 63
+
+
+State 18
+
+   53 IFWHILE: T_IF .
+
+    $default  reduce using rule 53 (IFWHILE)
+
+
+State 19
+
+   68 INCDEC: T_INC_OP .
+
+    $default  reduce using rule 68 (INCDEC)
+
+
+State 20
+
+   69 INCDEC: T_DEC_OP .
+
+    $default  reduce using rule 69 (INCDEC)
+
+
+State 21
+
+    7 FUNCTIONLIST: FUNCTIONLIST FUNCTION .
+
+    $default  reduce using rule 7 (FUNCTIONLIST)
+
+
+State 22
+
+    3 BASE: FUNCTIONLIST ALLSTATE .
+
+    $default  reduce using rule 3 (BASE)
+
+
+State 23
+
+   17 ALLSTATE: STATEMENTLIST .
+   20 STATEMENTLIST: STATEMENTLIST . STATEMENT
+   21              | STATEMENTLIST . STATEMENTNOSEMI
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 64
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    $default  reduce using rule 17 (ALLSTATE)
+
+    STATEMENT        go to state 65
+    STATEMENTNOSEMI  go to state 66
+    RETURN           go to state 26
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 67
+
+
+State 24
+
+   19 STATEMENTLIST: STATEMENT .
+
+    $default  reduce using rule 19 (STATEMENTLIST)
+
+
+State 25
+
+    8 FUNCTIONLIST: FUNCTIONLIST DECLARATIONLIST . FUNCTION
+   16 ALLSTATE: DECLARATIONLIST . STATEMENTLIST
+   18         | DECLARATIONLIST .
+   38 DECLARATIONLIST: DECLARATIONLIST . DECLARATION
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    $default  reduce using rule 18 (ALLSTATE)
+
+    FUNCTION       go to state 68
+    STATEMENTLIST  go to state 69
+    STATEMENT      go to state 24
+    DECLARATION    go to state 32
+    RETURN         go to state 26
+    TYPE           go to state 8
+    IFWHILE        go to state 27
+    COMPARE        go to state 28
+    COMPARE2VAR    go to state 29
+    INCDEC         go to state 30
+
+
+State 26
+
+   23 STATEMENT: RETURN .
+
+    $default  reduce using rule 23 (STATEMENT)
+
+
+State 27
+
+   26 STATEMENT: IFWHILE . T_LBRACKET COMPARE T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   27          | IFWHILE . T_LBRACKET COMPARE T_RBRACKET T_LCURLY T_RCURLY
+
+    T_LBRACKET  shift, and go to state 70
+
+
+State 28
+
+   33 STATEMENT: COMPARE . T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT
+
+    T_QUESTIONM  shift, and go to state 71
+
+
+State 29
+
+   55 COMPARE: COMPARE2VAR .
+
+    $default  reduce using rule 55 (COMPARE)
+
+
+State 30
+
+   24 STATEMENT: INCDEC . T_VARIABLE T_SEMICOLON
+
+    T_VARIABLE  shift, and go to state 72
+
+
+State 31
+
+    5 FUNCTIONLIST: DECLARATIONLIST FUNCTION .
+
+    $default  reduce using rule 5 (FUNCTIONLIST)
+
+
+State 32
+
+   38 DECLARATIONLIST: DECLARATIONLIST DECLARATION .
+
+    $default  reduce using rule 38 (DECLARATIONLIST)
+
+
+State 33
+
+    9 FUNCTION: TYPE T_VARIABLE . T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   10         | TYPE T_VARIABLE . T_LBRACKET T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   11         | TYPE T_VARIABLE . T_LBRACKET T_RBRACKET T_LCURLY T_RCURLY
+   12         | TYPE T_VARIABLE . T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY T_RCURLY
+   39 DECLARATION: TYPE T_VARIABLE . T_SEMICOLON
+   40            | TYPE T_VARIABLE . T_EQUAL EXPR T_SEMICOLON
+
+    T_LBRACKET   shift, and go to state 73
+    T_SEMICOLON  shift, and go to state 74
+    T_EQUAL      shift, and go to state 75
+
+
+State 34
+
+   51 RETURN: T_RETURN T_VARIABLE . T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 76
+
+
+State 35
+
+   56 COMPARE: T_NOT T_LBRACKET . COMPARE2VAR T_RBRACKET
+
+    T_NUMBER    shift, and go to state 77
+    T_VARIABLE  shift, and go to state 38
+
+    COMPARE2VAR  go to state 78
+
+
+State 36
+
+   28 STATEMENT: T_ELSE T_LCURLY . ALLSTATE T_RCURLY
+   29          | T_ELSE T_LCURLY . T_RCURLY
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_RCURLY    shift, and go to state 79
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    ALLSTATE         go to state 80
+    STATEMENTLIST    go to state 23
+    STATEMENT        go to state 24
+    DECLARATIONLIST  go to state 81
+    DECLARATION      go to state 7
+    RETURN           go to state 26
+    TYPE             go to state 82
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 30
+
+
+State 37
+
+   30 STATEMENT: T_FOR T_LBRACKET . DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET . DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY T_RCURLY
+
+    T_NUMINT  shift, and go to state 1
+
+    DECLARATION  go to state 83
+    TYPE         go to state 82
+
+
+State 38
+
+   58 COMPARE2VAR: T_VARIABLE . COND_OP T_VARIABLE
+   59            | T_VARIABLE . COND_OP T_NUMBER
+
+    T_GREATERTHAN  shift, and go to state 40
+    T_LESSTHAN     shift, and go to state 41
+    T_LE_OP        shift, and go to state 42
+    T_GE_OP        shift, and go to state 43
+    T_EQ_OP        shift, and go to state 44
+    T_NE_OP        shift, and go to state 45
+    T_AND_OP       shift, and go to state 46
+    T_OR_OP        shift, and go to state 47
+
+    COND_OP   go to state 61
+    UNARY_OP  go to state 49
+
+
+State 39
+
+   32 STATEMENT: T_LBRACKET COMPARE . T_RBRACKET T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT
+
+    T_RBRACKET  shift, and go to state 84
+
+
+State 40
+
+   63 COND_OP: T_GREATERTHAN .
+
+    $default  reduce using rule 63 (COND_OP)
+
+
+State 41
+
+   64 COND_OP: T_LESSTHAN .
+
+    $default  reduce using rule 64 (COND_OP)
+
+
+State 42
+
+   65 COND_OP: T_LE_OP .
+
+    $default  reduce using rule 65 (COND_OP)
+
+
+State 43
+
+   66 COND_OP: T_GE_OP .
+
+    $default  reduce using rule 66 (COND_OP)
+
+
+State 44
+
+   61 COND_OP: T_EQ_OP .
+
+    $default  reduce using rule 61 (COND_OP)
+
+
+State 45
+
+   62 COND_OP: T_NE_OP .
+
+    $default  reduce using rule 62 (COND_OP)
+
+
+State 46
+
+   70 UNARY_OP: T_AND_OP .
+
+    $default  reduce using rule 70 (UNARY_OP)
+
+
+State 47
+
+   71 UNARY_OP: T_OR_OP .
+
+    $default  reduce using rule 71 (UNARY_OP)
+
+
+State 48
+
+   60 COMPARE2VAR: T_NUMBER COND_OP . T_NUMBER
+
+    T_NUMBER  shift, and go to state 85
+
+
+State 49
+
+   67 COND_OP: UNARY_OP .
+
+    $default  reduce using rule 67 (COND_OP)
+
+
+State 50
+
+   72 ASSIGNMENT_OP: T_EQUAL .
+
+    $default  reduce using rule 72 (ASSIGNMENT_OP)
+
+
+State 51
+
+   73 ASSIGNMENT_OP: T_MUL_ASSIGN .
+
+    $default  reduce using rule 73 (ASSIGNMENT_OP)
+
+
+State 52
+
+   74 ASSIGNMENT_OP: T_DIV_ASSIGN .
+
+    $default  reduce using rule 74 (ASSIGNMENT_OP)
+
+
+State 53
+
+   75 ASSIGNMENT_OP: T_MOD_ASSIGN .
+
+    $default  reduce using rule 75 (ASSIGNMENT_OP)
+
+
+State 54
+
+   76 ASSIGNMENT_OP: T_ADD_ASSIGN .
+
+    $default  reduce using rule 76 (ASSIGNMENT_OP)
+
+
+State 55
+
+   77 ASSIGNMENT_OP: T_SUB_ASSIGN .
+
+    $default  reduce using rule 77 (ASSIGNMENT_OP)
+
+
+State 56
+
+   78 ASSIGNMENT_OP: T_LEFT_ASSIGN .
+
+    $default  reduce using rule 78 (ASSIGNMENT_OP)
+
+
+State 57
+
+   79 ASSIGNMENT_OP: T_RIGHT_ASSIGN .
+
+    $default  reduce using rule 79 (ASSIGNMENT_OP)
+
+
+State 58
+
+   80 ASSIGNMENT_OP: T_AND_ASSIGN .
+
+    $default  reduce using rule 80 (ASSIGNMENT_OP)
+
+
+State 59
+
+   81 ASSIGNMENT_OP: T_XOR_ASSIGN .
+
+    $default  reduce using rule 81 (ASSIGNMENT_OP)
+
+
+State 60
+
+   82 ASSIGNMENT_OP: T_OR_ASSIGN .
+
+    $default  reduce using rule 82 (ASSIGNMENT_OP)
+
+
+State 61
+
+   58 COMPARE2VAR: T_VARIABLE COND_OP . T_VARIABLE
+   59            | T_VARIABLE COND_OP . T_NUMBER
+
+    T_NUMBER    shift, and go to state 86
+    T_VARIABLE  shift, and go to state 87
+
+
+State 62
+
+   25 STATEMENT: T_VARIABLE INCDEC . T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 88
+
+
+State 63
+
+   22 STATEMENT: T_VARIABLE ASSIGNMENT_OP . EXPR T_SEMICOLON
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    EXPR    go to state 92
+    TERM    go to state 93
+    FACTOR  go to state 94
+
+
+State 64
+
+   22 STATEMENT: T_VARIABLE . ASSIGNMENT_OP EXPR T_SEMICOLON
+   25          | T_VARIABLE . INCDEC T_SEMICOLON
+   34 STATEMENTNOSEMI: T_VARIABLE . ASSIGNMENT_OP EXPR
+   36                | T_VARIABLE . INCDEC
+   58 COMPARE2VAR: T_VARIABLE . COND_OP T_VARIABLE
+   59            | T_VARIABLE . COND_OP T_NUMBER
+
+    T_GREATERTHAN   shift, and go to state 40
+    T_LESSTHAN      shift, and go to state 41
+    T_EQUAL         shift, and go to state 50
+    T_MUL_ASSIGN    shift, and go to state 51
+    T_DIV_ASSIGN    shift, and go to state 52
+    T_MOD_ASSIGN    shift, and go to state 53
+    T_ADD_ASSIGN    shift, and go to state 54
+    T_SUB_ASSIGN    shift, and go to state 55
+    T_LEFT_ASSIGN   shift, and go to state 56
+    T_RIGHT_ASSIGN  shift, and go to state 57
+    T_AND_ASSIGN    shift, and go to state 58
+    T_XOR_ASSIGN    shift, and go to state 59
+    T_OR_ASSIGN     shift, and go to state 60
+    T_LE_OP         shift, and go to state 42
+    T_GE_OP         shift, and go to state 43
+    T_EQ_OP         shift, and go to state 44
+    T_NE_OP         shift, and go to state 45
+    T_INC_OP        shift, and go to state 19
+    T_DEC_OP        shift, and go to state 20
+    T_AND_OP        shift, and go to state 46
+    T_OR_OP         shift, and go to state 47
+
+    COND_OP        go to state 61
+    INCDEC         go to state 95
+    UNARY_OP       go to state 49
+    ASSIGNMENT_OP  go to state 96
+
+
+State 65
+
+   20 STATEMENTLIST: STATEMENTLIST STATEMENT .
+
+    $default  reduce using rule 20 (STATEMENTLIST)
+
+
+State 66
+
+   21 STATEMENTLIST: STATEMENTLIST STATEMENTNOSEMI .
+
+    $default  reduce using rule 21 (STATEMENTLIST)
+
+
+State 67
+
+   24 STATEMENT: INCDEC . T_VARIABLE T_SEMICOLON
+   35 STATEMENTNOSEMI: INCDEC . T_VARIABLE
+
+    T_VARIABLE  shift, and go to state 97
+
+
+State 68
+
+    8 FUNCTIONLIST: FUNCTIONLIST DECLARATIONLIST FUNCTION .
+
+    $default  reduce using rule 8 (FUNCTIONLIST)
+
+
+State 69
+
+   16 ALLSTATE: DECLARATIONLIST STATEMENTLIST .
+   20 STATEMENTLIST: STATEMENTLIST . STATEMENT
+   21              | STATEMENTLIST . STATEMENTNOSEMI
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 64
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    $default  reduce using rule 16 (ALLSTATE)
+
+    STATEMENT        go to state 65
+    STATEMENTNOSEMI  go to state 66
+    RETURN           go to state 26
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 67
+
+
+State 70
+
+   26 STATEMENT: IFWHILE T_LBRACKET . COMPARE T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   27          | IFWHILE T_LBRACKET . COMPARE T_RBRACKET T_LCURLY T_RCURLY
+
+    T_NOT       shift, and go to state 11
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 38
+
+    COMPARE      go to state 98
+    COMPARE2VAR  go to state 29
+
+
+State 71
+
+   33 STATEMENT: COMPARE T_QUESTIONM . STATEMENTNOSEMI T_COLON STATEMENT
+
+    T_VARIABLE  shift, and go to state 99
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    STATEMENTNOSEMI  go to state 100
+    INCDEC           go to state 101
+
+
+State 72
+
+   24 STATEMENT: INCDEC T_VARIABLE . T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 102
+
+
+State 73
+
+    9 FUNCTION: TYPE T_VARIABLE T_LBRACKET . PARAMLIST T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   10         | TYPE T_VARIABLE T_LBRACKET . T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   11         | TYPE T_VARIABLE T_LBRACKET . T_RBRACKET T_LCURLY T_RCURLY
+   12         | TYPE T_VARIABLE T_LBRACKET . PARAMLIST T_RBRACKET T_LCURLY T_RCURLY
+
+    T_RBRACKET  shift, and go to state 103
+    T_NUMINT    shift, and go to state 1
+
+    PARAMLIST  go to state 104
+    PARAM      go to state 105
+    TYPE       go to state 106
+
+
+State 74
+
+   39 DECLARATION: TYPE T_VARIABLE T_SEMICOLON .
+
+    $default  reduce using rule 39 (DECLARATION)
+
+
+State 75
+
+   40 DECLARATION: TYPE T_VARIABLE T_EQUAL . EXPR T_SEMICOLON
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    EXPR    go to state 107
+    TERM    go to state 93
+    FACTOR  go to state 94
+
+
+State 76
+
+   51 RETURN: T_RETURN T_VARIABLE T_SEMICOLON .
+
+    $default  reduce using rule 51 (RETURN)
+
+
+State 77
+
+   60 COMPARE2VAR: T_NUMBER . COND_OP T_NUMBER
+
+    T_GREATERTHAN  shift, and go to state 40
+    T_LESSTHAN     shift, and go to state 41
+    T_LE_OP        shift, and go to state 42
+    T_GE_OP        shift, and go to state 43
+    T_EQ_OP        shift, and go to state 44
+    T_NE_OP        shift, and go to state 45
+    T_AND_OP       shift, and go to state 46
+    T_OR_OP        shift, and go to state 47
+
+    COND_OP   go to state 48
+    UNARY_OP  go to state 49
+
+
+State 78
+
+   56 COMPARE: T_NOT T_LBRACKET COMPARE2VAR . T_RBRACKET
+
+    T_RBRACKET  shift, and go to state 108
+
+
+State 79
+
+   29 STATEMENT: T_ELSE T_LCURLY T_RCURLY .
+
+    $default  reduce using rule 29 (STATEMENT)
+
+
+State 80
+
+   28 STATEMENT: T_ELSE T_LCURLY ALLSTATE . T_RCURLY
+
+    T_RCURLY  shift, and go to state 109
+
+
+State 81
+
+   16 ALLSTATE: DECLARATIONLIST . STATEMENTLIST
+   18         | DECLARATIONLIST .
+   38 DECLARATIONLIST: DECLARATIONLIST . DECLARATION
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    $default  reduce using rule 18 (ALLSTATE)
+
+    STATEMENTLIST  go to state 69
+    STATEMENT      go to state 24
+    DECLARATION    go to state 32
+    RETURN         go to state 26
+    TYPE           go to state 82
+    IFWHILE        go to state 27
+    COMPARE        go to state 28
+    COMPARE2VAR    go to state 29
+    INCDEC         go to state 30
+
+
+State 82
+
+   39 DECLARATION: TYPE . T_VARIABLE T_SEMICOLON
+   40            | TYPE . T_VARIABLE T_EQUAL EXPR T_SEMICOLON
+
+    T_VARIABLE  shift, and go to state 110
+
+
+State 83
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION . COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION . COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY T_RCURLY
+
+    T_NOT       shift, and go to state 11
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 38
+
+    COMPARE      go to state 111
+    COMPARE2VAR  go to state 29
+
+
+State 84
+
+   32 STATEMENT: T_LBRACKET COMPARE T_RBRACKET . T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT
+
+    T_QUESTIONM  shift, and go to state 112
+
+
+State 85
+
+   60 COMPARE2VAR: T_NUMBER COND_OP T_NUMBER .
+
+    $default  reduce using rule 60 (COMPARE2VAR)
+
+
+State 86
+
+   59 COMPARE2VAR: T_VARIABLE COND_OP T_NUMBER .
+
+    $default  reduce using rule 59 (COMPARE2VAR)
+
+
+State 87
+
+   58 COMPARE2VAR: T_VARIABLE COND_OP T_VARIABLE .
+
+    $default  reduce using rule 58 (COMPARE2VAR)
+
+
+State 88
+
+   25 STATEMENT: T_VARIABLE INCDEC T_SEMICOLON .
+
+    $default  reduce using rule 25 (STATEMENT)
+
+
+State 89
+
+   50 FACTOR: T_LBRACKET . EXPR T_RBRACKET
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    EXPR    go to state 113
+    TERM    go to state 93
+    FACTOR  go to state 94
+
+
+State 90
+
+   48 FACTOR: T_NUMBER .
+
+    $default  reduce using rule 48 (FACTOR)
+
+
+State 91
+
+   49 FACTOR: T_VARIABLE .
+
+    $default  reduce using rule 49 (FACTOR)
+
+
+State 92
+
+   22 STATEMENT: T_VARIABLE ASSIGNMENT_OP EXPR . T_SEMICOLON
+   42 EXPR: EXPR . T_PLUS TERM
+   43     | EXPR . T_MINUS TERM
+   44     | EXPR . T_MODULO TERM
+
+    T_MODULO     shift, and go to state 114
+    T_PLUS       shift, and go to state 115
+    T_MINUS      shift, and go to state 116
+    T_SEMICOLON  shift, and go to state 117
+
+
+State 93
+
+   41 EXPR: TERM .
+   45 TERM: TERM . T_TIMES FACTOR
+   46     | TERM . T_DIVIDE FACTOR
+
+    T_TIMES   shift, and go to state 118
+    T_DIVIDE  shift, and go to state 119
+
+    $default  reduce using rule 41 (EXPR)
+
+
+State 94
+
+   47 TERM: FACTOR .
+
+    $default  reduce using rule 47 (TERM)
+
+
+State 95
+
+   25 STATEMENT: T_VARIABLE INCDEC . T_SEMICOLON
+   36 STATEMENTNOSEMI: T_VARIABLE INCDEC .
+
+    T_SEMICOLON  shift, and go to state 88
+
+    $default  reduce using rule 36 (STATEMENTNOSEMI)
+
+
+State 96
+
+   22 STATEMENT: T_VARIABLE ASSIGNMENT_OP . EXPR T_SEMICOLON
+   34 STATEMENTNOSEMI: T_VARIABLE ASSIGNMENT_OP . EXPR
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    EXPR    go to state 120
+    TERM    go to state 93
+    FACTOR  go to state 94
+
+
+State 97
+
+   24 STATEMENT: INCDEC T_VARIABLE . T_SEMICOLON
+   35 STATEMENTNOSEMI: INCDEC T_VARIABLE .
+
+    T_SEMICOLON  shift, and go to state 102
+
+    $default  reduce using rule 35 (STATEMENTNOSEMI)
+
+
+State 98
+
+   26 STATEMENT: IFWHILE T_LBRACKET COMPARE . T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   27          | IFWHILE T_LBRACKET COMPARE . T_RBRACKET T_LCURLY T_RCURLY
+
+    T_RBRACKET  shift, and go to state 121
+
+
+State 99
+
+   34 STATEMENTNOSEMI: T_VARIABLE . ASSIGNMENT_OP EXPR
+   36                | T_VARIABLE . INCDEC
+
+    T_EQUAL         shift, and go to state 50
+    T_MUL_ASSIGN    shift, and go to state 51
+    T_DIV_ASSIGN    shift, and go to state 52
+    T_MOD_ASSIGN    shift, and go to state 53
+    T_ADD_ASSIGN    shift, and go to state 54
+    T_SUB_ASSIGN    shift, and go to state 55
+    T_LEFT_ASSIGN   shift, and go to state 56
+    T_RIGHT_ASSIGN  shift, and go to state 57
+    T_AND_ASSIGN    shift, and go to state 58
+    T_XOR_ASSIGN    shift, and go to state 59
+    T_OR_ASSIGN     shift, and go to state 60
+    T_INC_OP        shift, and go to state 19
+    T_DEC_OP        shift, and go to state 20
+
+    INCDEC         go to state 122
+    ASSIGNMENT_OP  go to state 123
+
+
+State 100
+
+   33 STATEMENT: COMPARE T_QUESTIONM STATEMENTNOSEMI . T_COLON STATEMENT
+
+    T_COLON  shift, and go to state 124
+
+
+State 101
+
+   35 STATEMENTNOSEMI: INCDEC . T_VARIABLE
+
+    T_VARIABLE  shift, and go to state 125
+
+
+State 102
+
+   24 STATEMENT: INCDEC T_VARIABLE T_SEMICOLON .
+
+    $default  reduce using rule 24 (STATEMENT)
+
+
+State 103
+
+   10 FUNCTION: TYPE T_VARIABLE T_LBRACKET T_RBRACKET . T_LCURLY ALLSTATE T_RCURLY
+   11         | TYPE T_VARIABLE T_LBRACKET T_RBRACKET . T_LCURLY T_RCURLY
+
+    T_LCURLY  shift, and go to state 126
+
+
+State 104
+
+    9 FUNCTION: TYPE T_VARIABLE T_LBRACKET PARAMLIST . T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   12         | TYPE T_VARIABLE T_LBRACKET PARAMLIST . T_RBRACKET T_LCURLY T_RCURLY
+   14 PARAMLIST: PARAMLIST . T_COMMAR PARAM
+
+    T_COMMAR    shift, and go to state 127
+    T_RBRACKET  shift, and go to state 128
+
+
+State 105
+
+   13 PARAMLIST: PARAM .
+
+    $default  reduce using rule 13 (PARAMLIST)
+
+
+State 106
+
+   15 PARAM: TYPE . T_VARIABLE
+
+    T_VARIABLE  shift, and go to state 129
+
+
+State 107
+
+   40 DECLARATION: TYPE T_VARIABLE T_EQUAL EXPR . T_SEMICOLON
+   42 EXPR: EXPR . T_PLUS TERM
+   43     | EXPR . T_MINUS TERM
+   44     | EXPR . T_MODULO TERM
+
+    T_MODULO     shift, and go to state 114
+    T_PLUS       shift, and go to state 115
+    T_MINUS      shift, and go to state 116
+    T_SEMICOLON  shift, and go to state 130
+
+
+State 108
+
+   56 COMPARE: T_NOT T_LBRACKET COMPARE2VAR T_RBRACKET .
+
+    $default  reduce using rule 56 (COMPARE)
+
+
+State 109
+
+   28 STATEMENT: T_ELSE T_LCURLY ALLSTATE T_RCURLY .
+
+    $default  reduce using rule 28 (STATEMENT)
+
+
+State 110
+
+   39 DECLARATION: TYPE T_VARIABLE . T_SEMICOLON
+   40            | TYPE T_VARIABLE . T_EQUAL EXPR T_SEMICOLON
+
+    T_SEMICOLON  shift, and go to state 74
+    T_EQUAL      shift, and go to state 75
+
+
+State 111
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE . T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION COMPARE . T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY T_RCURLY
+
+    T_SEMICOLON  shift, and go to state 131
+
+
+State 112
+
+   32 STATEMENT: T_LBRACKET COMPARE T_RBRACKET T_QUESTIONM . STATEMENTNOSEMI T_COLON STATEMENT
+
+    T_VARIABLE  shift, and go to state 99
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    STATEMENTNOSEMI  go to state 132
+    INCDEC           go to state 101
+
+
+State 113
+
+   42 EXPR: EXPR . T_PLUS TERM
+   43     | EXPR . T_MINUS TERM
+   44     | EXPR . T_MODULO TERM
+   50 FACTOR: T_LBRACKET EXPR . T_RBRACKET
+
+    T_MODULO    shift, and go to state 114
+    T_PLUS      shift, and go to state 115
+    T_MINUS     shift, and go to state 116
+    T_RBRACKET  shift, and go to state 133
+
+
+State 114
+
+   44 EXPR: EXPR T_MODULO . TERM
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    TERM    go to state 134
+    FACTOR  go to state 94
+
+
+State 115
+
+   42 EXPR: EXPR T_PLUS . TERM
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    TERM    go to state 135
+    FACTOR  go to state 94
+
+
+State 116
+
+   43 EXPR: EXPR T_MINUS . TERM
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    TERM    go to state 136
+    FACTOR  go to state 94
+
+
+State 117
+
+   22 STATEMENT: T_VARIABLE ASSIGNMENT_OP EXPR T_SEMICOLON .
+
+    $default  reduce using rule 22 (STATEMENT)
+
+
+State 118
+
+   45 TERM: TERM T_TIMES . FACTOR
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    FACTOR  go to state 137
+
+
+State 119
+
+   46 TERM: TERM T_DIVIDE . FACTOR
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    FACTOR  go to state 138
+
+
+State 120
+
+   22 STATEMENT: T_VARIABLE ASSIGNMENT_OP EXPR . T_SEMICOLON
+   34 STATEMENTNOSEMI: T_VARIABLE ASSIGNMENT_OP EXPR .
+   42 EXPR: EXPR . T_PLUS TERM
+   43     | EXPR . T_MINUS TERM
+   44     | EXPR . T_MODULO TERM
+
+    T_MODULO     shift, and go to state 114
+    T_PLUS       shift, and go to state 115
+    T_MINUS      shift, and go to state 116
+    T_SEMICOLON  shift, and go to state 117
+
+    $default  reduce using rule 34 (STATEMENTNOSEMI)
+
+
+State 121
+
+   26 STATEMENT: IFWHILE T_LBRACKET COMPARE T_RBRACKET . T_LCURLY ALLSTATE T_RCURLY
+   27          | IFWHILE T_LBRACKET COMPARE T_RBRACKET . T_LCURLY T_RCURLY
+
+    T_LCURLY  shift, and go to state 139
+
+
+State 122
+
+   36 STATEMENTNOSEMI: T_VARIABLE INCDEC .
+
+    $default  reduce using rule 36 (STATEMENTNOSEMI)
+
+
+State 123
+
+   34 STATEMENTNOSEMI: T_VARIABLE ASSIGNMENT_OP . EXPR
+
+    T_LBRACKET  shift, and go to state 89
+    T_NUMBER    shift, and go to state 90
+    T_VARIABLE  shift, and go to state 91
+
+    EXPR    go to state 140
+    TERM    go to state 93
+    FACTOR  go to state 94
+
+
+State 124
+
+   33 STATEMENT: COMPARE T_QUESTIONM STATEMENTNOSEMI T_COLON . STATEMENT
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    STATEMENT    go to state 141
+    RETURN       go to state 26
+    IFWHILE      go to state 27
+    COMPARE      go to state 28
+    COMPARE2VAR  go to state 29
+    INCDEC       go to state 30
+
+
+State 125
+
+   35 STATEMENTNOSEMI: INCDEC T_VARIABLE .
+
+    $default  reduce using rule 35 (STATEMENTNOSEMI)
+
+
+State 126
+
+   10 FUNCTION: TYPE T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY . ALLSTATE T_RCURLY
+   11         | TYPE T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY . T_RCURLY
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_RCURLY    shift, and go to state 142
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    ALLSTATE         go to state 143
+    STATEMENTLIST    go to state 23
+    STATEMENT        go to state 24
+    DECLARATIONLIST  go to state 81
+    DECLARATION      go to state 7
+    RETURN           go to state 26
+    TYPE             go to state 82
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 30
+
+
+State 127
+
+   14 PARAMLIST: PARAMLIST T_COMMAR . PARAM
+
+    T_NUMINT  shift, and go to state 1
+
+    PARAM  go to state 144
+    TYPE   go to state 106
+
+
+State 128
+
+    9 FUNCTION: TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET . T_LCURLY ALLSTATE T_RCURLY
+   12         | TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET . T_LCURLY T_RCURLY
+
+    T_LCURLY  shift, and go to state 145
+
+
+State 129
+
+   15 PARAM: TYPE T_VARIABLE .
+
+    $default  reduce using rule 15 (PARAM)
+
+
+State 130
+
+   40 DECLARATION: TYPE T_VARIABLE T_EQUAL EXPR T_SEMICOLON .
+
+    $default  reduce using rule 40 (DECLARATION)
+
+
+State 131
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON . T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON . T_VARIABLE INCDEC T_RBRACKET T_LCURLY T_RCURLY
+
+    T_VARIABLE  shift, and go to state 146
+
+
+State 132
+
+   32 STATEMENT: T_LBRACKET COMPARE T_RBRACKET T_QUESTIONM STATEMENTNOSEMI . T_COLON STATEMENT
+
+    T_COLON  shift, and go to state 147
+
+
+State 133
+
+   50 FACTOR: T_LBRACKET EXPR T_RBRACKET .
+
+    $default  reduce using rule 50 (FACTOR)
+
+
+State 134
+
+   44 EXPR: EXPR T_MODULO TERM .
+   45 TERM: TERM . T_TIMES FACTOR
+   46     | TERM . T_DIVIDE FACTOR
+
+    T_TIMES   shift, and go to state 118
+    T_DIVIDE  shift, and go to state 119
+
+    $default  reduce using rule 44 (EXPR)
+
+
+State 135
+
+   42 EXPR: EXPR T_PLUS TERM .
+   45 TERM: TERM . T_TIMES FACTOR
+   46     | TERM . T_DIVIDE FACTOR
+
+    T_TIMES   shift, and go to state 118
+    T_DIVIDE  shift, and go to state 119
+
+    $default  reduce using rule 42 (EXPR)
+
+
+State 136
+
+   43 EXPR: EXPR T_MINUS TERM .
+   45 TERM: TERM . T_TIMES FACTOR
+   46     | TERM . T_DIVIDE FACTOR
+
+    T_TIMES   shift, and go to state 118
+    T_DIVIDE  shift, and go to state 119
+
+    $default  reduce using rule 43 (EXPR)
+
+
+State 137
+
+   45 TERM: TERM T_TIMES FACTOR .
+
+    $default  reduce using rule 45 (TERM)
+
+
+State 138
+
+   46 TERM: TERM T_DIVIDE FACTOR .
+
+    $default  reduce using rule 46 (TERM)
+
+
+State 139
+
+   26 STATEMENT: IFWHILE T_LBRACKET COMPARE T_RBRACKET T_LCURLY . ALLSTATE T_RCURLY
+   27          | IFWHILE T_LBRACKET COMPARE T_RBRACKET T_LCURLY . T_RCURLY
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_RCURLY    shift, and go to state 148
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    ALLSTATE         go to state 149
+    STATEMENTLIST    go to state 23
+    STATEMENT        go to state 24
+    DECLARATIONLIST  go to state 81
+    DECLARATION      go to state 7
+    RETURN           go to state 26
+    TYPE             go to state 82
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 30
+
+
+State 140
+
+   34 STATEMENTNOSEMI: T_VARIABLE ASSIGNMENT_OP EXPR .
+   42 EXPR: EXPR . T_PLUS TERM
+   43     | EXPR . T_MINUS TERM
+   44     | EXPR . T_MODULO TERM
+
+    T_MODULO  shift, and go to state 114
+    T_PLUS    shift, and go to state 115
+    T_MINUS   shift, and go to state 116
+
+    $default  reduce using rule 34 (STATEMENTNOSEMI)
+
+
+State 141
+
+   33 STATEMENT: COMPARE T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT .
+
+    $default  reduce using rule 33 (STATEMENT)
+
+
+State 142
+
+   11 FUNCTION: TYPE T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY T_RCURLY .
+
+    $default  reduce using rule 11 (FUNCTION)
+
+
+State 143
+
+   10 FUNCTION: TYPE T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY ALLSTATE . T_RCURLY
+
+    T_RCURLY  shift, and go to state 150
+
+
+State 144
+
+   14 PARAMLIST: PARAMLIST T_COMMAR PARAM .
+
+    $default  reduce using rule 14 (PARAMLIST)
+
+
+State 145
+
+    9 FUNCTION: TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY . ALLSTATE T_RCURLY
+   12         | TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY . T_RCURLY
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_RCURLY    shift, and go to state 151
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    ALLSTATE         go to state 152
+    STATEMENTLIST    go to state 23
+    STATEMENT        go to state 24
+    DECLARATIONLIST  go to state 81
+    DECLARATION      go to state 7
+    RETURN           go to state 26
+    TYPE             go to state 82
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 30
+
+
+State 146
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE . INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE . INCDEC T_RBRACKET T_LCURLY T_RCURLY
+
+    T_INC_OP  shift, and go to state 19
+    T_DEC_OP  shift, and go to state 20
+
+    INCDEC  go to state 153
+
+
+State 147
+
+   32 STATEMENT: T_LBRACKET COMPARE T_RBRACKET T_QUESTIONM STATEMENTNOSEMI T_COLON . STATEMENT
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    STATEMENT    go to state 154
+    RETURN       go to state 26
+    IFWHILE      go to state 27
+    COMPARE      go to state 28
+    COMPARE2VAR  go to state 29
+    INCDEC       go to state 30
+
+
+State 148
+
+   27 STATEMENT: IFWHILE T_LBRACKET COMPARE T_RBRACKET T_LCURLY T_RCURLY .
+
+    $default  reduce using rule 27 (STATEMENT)
+
+
+State 149
+
+   26 STATEMENT: IFWHILE T_LBRACKET COMPARE T_RBRACKET T_LCURLY ALLSTATE . T_RCURLY
+
+    T_RCURLY  shift, and go to state 155
+
+
+State 150
+
+   10 FUNCTION: TYPE T_VARIABLE T_LBRACKET T_RBRACKET T_LCURLY ALLSTATE T_RCURLY .
+
+    $default  reduce using rule 10 (FUNCTION)
+
+
+State 151
+
+   12 FUNCTION: TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY T_RCURLY .
+
+    $default  reduce using rule 12 (FUNCTION)
+
+
+State 152
+
+    9 FUNCTION: TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY ALLSTATE . T_RCURLY
+
+    T_RCURLY  shift, and go to state 156
+
+
+State 153
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC . T_RBRACKET T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC . T_RBRACKET T_LCURLY T_RCURLY
+
+    T_RBRACKET  shift, and go to state 157
+
+
+State 154
+
+   32 STATEMENT: T_LBRACKET COMPARE T_RBRACKET T_QUESTIONM STATEMENTNOSEMI T_COLON STATEMENT .
+
+    $default  reduce using rule 32 (STATEMENT)
+
+
+State 155
+
+   26 STATEMENT: IFWHILE T_LBRACKET COMPARE T_RBRACKET T_LCURLY ALLSTATE T_RCURLY .
+
+    $default  reduce using rule 26 (STATEMENT)
+
+
+State 156
+
+    9 FUNCTION: TYPE T_VARIABLE T_LBRACKET PARAMLIST T_RBRACKET T_LCURLY ALLSTATE T_RCURLY .
+
+    $default  reduce using rule 9 (FUNCTION)
+
+
+State 157
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET . T_LCURLY ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET . T_LCURLY T_RCURLY
+
+    T_LCURLY  shift, and go to state 158
+
+
+State 158
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY . ALLSTATE T_RCURLY
+   31          | T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY . T_RCURLY
+
+    T_RETURN    shift, and go to state 10
+    T_NOT       shift, and go to state 11
+    T_WHILE     shift, and go to state 12
+    T_ELSE      shift, and go to state 13
+    T_FOR       shift, and go to state 14
+    T_LBRACKET  shift, and go to state 15
+    T_NUMBER    shift, and go to state 16
+    T_VARIABLE  shift, and go to state 17
+    T_RCURLY    shift, and go to state 159
+    T_NUMINT    shift, and go to state 1
+    T_IF        shift, and go to state 18
+    T_INC_OP    shift, and go to state 19
+    T_DEC_OP    shift, and go to state 20
+
+    ALLSTATE         go to state 160
+    STATEMENTLIST    go to state 23
+    STATEMENT        go to state 24
+    DECLARATIONLIST  go to state 81
+    DECLARATION      go to state 7
+    RETURN           go to state 26
+    TYPE             go to state 82
+    IFWHILE          go to state 27
+    COMPARE          go to state 28
+    COMPARE2VAR      go to state 29
+    INCDEC           go to state 30
+
+
+State 159
+
+   31 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY T_RCURLY .
+
+    $default  reduce using rule 31 (STATEMENT)
+
+
+State 160
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE . T_RCURLY
+
+    T_RCURLY  shift, and go to state 161
+
+
+State 161
+
+   30 STATEMENT: T_FOR T_LBRACKET DECLARATION COMPARE T_SEMICOLON T_VARIABLE INCDEC T_RBRACKET T_LCURLY ALLSTATE T_RCURLY .
+
+    $default  reduce using rule 30 (STATEMENT)

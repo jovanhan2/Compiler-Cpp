@@ -1,0 +1,6 @@
+int main () {
+
+
+  functionCall (1,2,3,4);
+
+}
